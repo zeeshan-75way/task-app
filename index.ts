@@ -8,6 +8,8 @@ import routes from "./src/routes";
 import { config } from "dotenv";
 import cookieParser = require("cookie-parser");
 import { IUser } from "./src/users/user.dto";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from "./src/swagger/swagger";
 config();
 const port = Number(process.env.PORT) ?? 5000;
 
@@ -30,6 +32,7 @@ declare global {
 const initApp = async (): Promise<void> => {
   // init mongodb
   await initDB();
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   app.use("/api", routes);
 

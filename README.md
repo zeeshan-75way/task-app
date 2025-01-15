@@ -1,11 +1,92 @@
-# Todo App with Admin and User Roles (TypeScript)
+# Project Template
 
-This is a TypeScript-based Todo application where an **Admin** can create tasks, assign them to **Users**, and **Users** can mark tasks as "Completed" or "Pending". This project demonstrates role-based access control and task management with TypeScript.
+This project is a Node.js template with TypeScript, Express, JWT authentication, and various utilities for development. It includes features such as user authentication, task management, and various middleware for error handling and validation.
 
 ## Features
 
-- Admin can create tasks and assign them to users.
-- Users can view their assigned tasks and mark them as "Completed" or "Pending".
-- Role-based access: Admin and User have different permissions.
-- Tasks are stored in database
-- Password are hashed
+- **JWT Authentication**: Secure your routes with token-based authentication.
+- **User Management**: Create, update, and delete users, with validation and role-based access control.
+- **Task Management**: Create, update, and manage tasks assigned to users.
+- **TypeScript Support**: Fully supports TypeScript for type safety.
+- **Pre-configured ESLint, Prettier, and Husky**: Linting and code formatting are automated to ensure consistent code quality.
+- **Nodemon for Development**: Automatic server restarts on code changes.
+
+## Prerequisites
+
+Make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/en/) (v16 or later)
+- [npm](https://www.npmjs.com/) (recommended)
+
+## Installation
+
+1.  **Clone the repository**:
+
+    ```bash
+    git clone https://github.com/zeeshan-75way/task-app.git
+    cd task-app
+    ```
+
+2.  **Install dependencies**:
+
+    Using `npm` (recommended):
+
+    ```bash
+    npm install
+    ```
+
+    Or with `pnpm`:
+
+    ```bash
+    pnpm install
+    ```
+
+3.  **Create a `.env` file** in the root directory to store your environment variables:
+
+    ```bash
+    PORT=5000
+    MONGO_URI=<your-mongo-uri>
+    JWT_SECRET=<your-secret-key>
+    NODE_ENV=development
+    ```
+
+## Scripts
+
+Here are the available npm scripts:
+
+- **Start the server (development mode)**:  
+  Runs the server with `nodemon` for automatic restarts.
+
+  ```bash
+  npm run start
+  ```
+
+- **Build the project**:
+
+  ```bash
+  npm run build
+  ```
+
+- **Run TypeScript (dev)**:
+
+  ```bash
+  npm run start
+  ```
+
+## Folder Structure
+
+Here’s a basic overview of the project folder structure:
+
+```
+├── src
+│   ├── common
+│   │   ├── middleware
+│   │   └── helper
+│   ├── user
+│   ├── tasks
+│   └── ...
+├── .env                # Environment variables
+├── package.json        # Dependencies and scripts
+├── tsconfig.json       # TypeScript configuration
+└── README.md           # Project documentation
+```

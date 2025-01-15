@@ -11,6 +11,7 @@ import { IUser } from "../users/user.dto";
  * @returns task
  */
 export const createTask = asyncHandler(async (req: Request, res: Response) => {
+  //create task in database
   const result = await TaskService.createTask(req.body);
   res.send(createResponse(result, "Task Created Successfully"));
 });
@@ -23,14 +24,18 @@ export const createTask = asyncHandler(async (req: Request, res: Response) => {
 
 export const taskStatusChange = asyncHandler(
   async (req: Request, res: Response) => {
+    //check if task exists
     const task = await TaskService.getTaskById(req.params.id);
+    //if task does not exist then throw error
     if (!task) {
       throw new Error("Task not found");
     }
+    //if task is not assigned to user and he is changing its status then throw error
     if (task.assignedTo.toString() !== (req.user as IUser)._id.toString()) {
       throw new Error("Unauthorized access");
     }
 
+    //change task status
     const result = await TaskService.changeTaskStatus(
       req.params.id,
       req.body.status
@@ -45,8 +50,11 @@ export const taskStatusChange = asyncHandler(
  * @returns task
  */
 export const getUserTask = asyncHandler(async (req: Request, res: Response) => {
+  //get user id from logged in user
   const userId = (req.user as IUser)?._id;
+  //get user task
   const result = await TaskService.getUserTask(userId);
+  //if no task then throw error
   if (result.length <= 0) {
     throw new Error("No task found");
   }

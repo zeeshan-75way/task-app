@@ -1,0 +1,266 @@
+{
+  "/task/create": {
+    "post": {
+      "tags": ["Task"],
+      "summary": "Create a new task (Admin only)",
+      "operationId": "createTask",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "requestBody": {
+        "description": "Task creation details",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name/title of the task",
+                  "example": "Complete project report"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Detailed description of the task",
+                  "example": "Write a comprehensive project report for the end of Q1"
+                },
+                "assignedTo": {
+                  "type": "string",
+                  "description": "The ID of the user to whom the task is assigned",
+                  "example": "605c72ef153207a0f5f7f897"
+                }
+              },
+              "required": ["name", "description", "assignedTo"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Task created successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Task Created Successfully"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Forbidden, admin required",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "string",
+                    "example": "Forbidden, you do not have the required permissions"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/task/{id}": {
+    "patch": {
+      "tags": ["Task"],
+      "summary": "Change the status of a task (User only)",
+      "operationId": "taskStatusChange",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "The ID of the task to update",
+          "schema": {
+            "type": "string",
+            "example": "60d9f6bbd2e3c1b7d4b1c572"
+          }
+        }
+      ],
+      "requestBody": {
+        "description": "Task status update details",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": ["PENDING", "COMPLETED"],
+                  "description": "New status of the task",
+                  "example": "COMPLETED"
+                }
+              },
+              "required": ["status"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Task status updated successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Task Status Changed Successfully"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Unauthorized access",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "string",
+                    "example": "Unauthorized access"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Task not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "string",
+                    "example": "Task not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/task/my": {
+    "get": {
+      "tags": ["Task"],
+      "summary": "Get tasks assigned to the logged-in user",
+      "operationId": "getUserTask",
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Tasks retrieved successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array"
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "No tasks found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "string",
+                    "example": "No task found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Task": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the task",
+            "example": "60d9f6bbd2e3c1b7d4b1c572"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name/title of the task",
+            "example": "Complete project report"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the task",
+            "example": "Write a comprehensive project report for the end of Q1"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "COMPLETED"],
+            "description": "The current status of the task",
+            "example": "PENDING"
+          },
+          "assignedTo": {
+            "type": "string",
+            "description": "The ID of the user assigned to the task",
+            "example": "605c72ef153207a0f5f7f897"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the task was created",
+            "example": "2025-01-15T00:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the task was last updated",
+            "example": "2025-01-16T00:00:00Z"
+          }
+        },
+        "required": ["name", "description", "status", "assignedTo"]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
